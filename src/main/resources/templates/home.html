@@ -27,7 +27,7 @@
                        		</div>
                        		<div class="row form-group">
                        			<label class="col-sm-4">Password: </label>
-                       			<input class="col-sm-8 form-control input-sm" type="password" name="password"/>
+                       			<input class="col-sm-8 form-control input-sm" type="password" name="password" required pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" placeholder="minimal 8 karakter"/>
                        		</div>
                        		<div class="row form-group">
                        			<label class="col-sm-4">Role: </label>
@@ -41,6 +41,37 @@
                 </div>
             </div>
         </div>
+        
+        <br>
+          <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Update password
+                    </div>
+                    <div class="card-body">
+                       <form th:action="@{/user/passwordSubmit}" method="post">
+                       		<div class="row form-group">
+                       			<label class="col-sm-4">Password Lama: </label>
+                       			<input class="col-sm-8 form-control input-sm" id="oldPass" type="password" name="oldPassword"/>
+                       		</div>
+                       		<div class="row form-group">
+                       			<label class="col-sm-4">Password Baru: </label>
+                       			<input class="col-sm-8 form-control input-sm" id="newPass" type="password" name="newPassword"/>
+                       		</div>
+                       		<div class="row form-group">
+                       			<label class="col-sm-4">Konfirmasi Password Baru: </label>
+                       			<input class="col-sm-8 form-control input-sm" id="confirmNewPass" type="password" name="confirmPassword"/>
+                       		</div>
+                       		<div>
+                       			<button type="submit" class="btn btn-primary" >Simpan</button>
+                       		</div>
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <br>
         <div class="row">
             <div class="col-md-6">
@@ -59,5 +90,6 @@
             </div>
         </div>
     </div>
+    
 </body>
 </html>
