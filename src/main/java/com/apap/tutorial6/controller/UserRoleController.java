@@ -76,8 +76,13 @@ public class UserRoleController {
 		}
 	
 		
-		ModelAndView modelAndView = new ModelAndView("redirect:/");
+		ModelAndView modelAndView = new ModelAndView("redirect:/user/updatePassword");
 		redir.addFlashAttribute("msg", msg);
 		return modelAndView;
+	}
+	
+	@RequestMapping("/updatePassword")
+	public String updatePassword() {
+		return "update-password-success";
 	}
 }
