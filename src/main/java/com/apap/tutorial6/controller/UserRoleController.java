@@ -1,5 +1,7 @@
 package com.apap.tutorial6.controller;
 
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,9 +23,26 @@ public class UserRoleController {
 	@Autowired
 	private UserRoleService userService;
 	
+	public boolean validatePassword(String password) {
+		if(password.length()>7 && Pattern.compile("[a-zA-Z]").matcher(password).find() && Pattern.compile("[0-9]").matcher(password).find()) {
+				return true;
+		}
+		return false;
+	}
+	
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	private String addUserSubmit(@ModelAttribute UserRoleModel user) {
-		userService.addUser(user);
+	private String addUserSubmit(@ModelAttribute UserRoleModel user, Model model) {
+		String msg = "";
+		
+		if(this.validatePassword(user.getPassword())) {
+			userService.addUser(user);
+			msg = null;
+		}
+		
+		else {
+			msg = "Password harus terdiri dari 8 karakter yang di dalamnya ada huruf dan angka";
+		}
+		model.addAttribute("message", msg);
 		return "home";
 	}
 	
@@ -35,20 +54,27 @@ public class UserRoleController {
 		System.out.println(password.getConfirmPassword());
 		System.out.println(password.getNewPassword());
 		System.out.println(password.getOldPassword());
-		if(password.getConfirmPassword().equals(password.getNewPassword())) {
-			if(passwordEncoder.matches(password.getOldPassword(), user.getPassword())) {
-				userService.gantiPassword(user, password.getNewPassword());
-				msg = "Password Berhasil diupdate";
+		if(this.validatePassword(password.getOldPassword()) && this.validatePassword(password.getNewPassword()) && this.validatePassword(password.getConfirmPassword())) {
+			if(password.getConfirmPassword().equals(password.getNewPassword())) {
+				if(passwordEncoder.matches(password.getOldPassword(), user.getPassword())) {
+					userService.gantiPassword(user, password.getNewPassword());
+					msg = "Password Berhasil diupdate";
+				}
+				
+				else {
+					msg = "Password lama yang dimasukkan tidak sesuai";
+				}
 			}
 			
 			else {
-				msg = "Password lama yang dimasukkan tidak sesuai";
+				msg = "Password baru tidak sesuai";
 			}
-		}
 		
-		else {
-			msg = "Password baru tidak sesuai";
 		}
+		else {
+			msg = "Password harus terdiri dari 8 karakter yang di dalamnya ada huruf dan angka";
+		}
+	
 		
 		ModelAndView modelAndView = new ModelAndView("redirect:/");
 		redir.addFlashAttribute("msg", msg);

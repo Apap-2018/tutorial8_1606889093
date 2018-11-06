@@ -10,9 +10,9 @@
 
 <body>
     <nav th:replace="fragments/fragment :: navbar"></nav>
-
     <div class="container-fluid">
         <h2 th:text=" 'Hello ' + ${#httpServletRequest.remoteUser} + ' !'">Login as</h2>
+        <p th:text="${msg}"></p>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -27,7 +27,7 @@
                        		</div>
                        		<div class="row form-group">
                        			<label class="col-sm-4">Password: </label>
-                       			<input class="col-sm-8 form-control input-sm" type="password" name="password" required pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" placeholder="minimal 8 karakter"/>
+                       			<input class="col-sm-8 form-control input-sm" type="password" name="password"/>
                        		</div>
                        		<div class="row form-group">
                        			<label class="col-sm-4">Role: </label>
